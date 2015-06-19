@@ -8,8 +8,8 @@ add_subdirectory(utils)
 add_subdirectory(xmlio)
 
 add_subdirectory(tms-sim)
-add_subdirectory(generator)
 add_subdirectory(mkeval)
+add_subdirectory(generator)
 
 set(LINK_FLAGS ${LINK_FLAGS} "-Wl,-whole-archive")
 

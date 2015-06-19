@@ -6,14 +6,15 @@ set(generator_SOURCES
 
 add_library(mkgenerator OBJECT ${generator_SOURCES})
 
-#add_executable(generator generator.cpp)
+add_executable(generator generator.cpp)
 
-#target_link_libraries(generator
-#	mkgenerator schedulers xmlio taskmodels utility utils core
-#	${LIBXML2_LIBRARIES}
-#)
+target_link_libraries(generator
+  #  mkgenerator schedulers xmlio taskmodels utility utils core
+  tms
+  ${LIBXML2_LIBRARIES}
+)
 
-#install(TARGETS generator DESTINATION ${BINDIR})
+install(TARGETS generator DESTINATION ${BIN_INSTALL_DIR})
 
 #file(GLOB generator_HEADERS "*.h")
 #install(FILES ${generator_HEADERS} DESTINATION ${INCLUDE_INSTALL_DIR}/generator)
