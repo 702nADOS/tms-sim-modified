@@ -6,6 +6,7 @@ set(taskmodels_SOURCES
 	mkmonitor.cpp
 	mktask.cpp
 	periodictask.cpp
+  periodicloadtask.cpp
 	sporadictask.cpp
 	sptask.cpp
 	)

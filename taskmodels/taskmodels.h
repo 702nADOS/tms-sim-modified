@@ -9,6 +9,7 @@
 #define TASKMODELS_TASKMODELS_H 1
 
 #include <taskmodels/periodictask.h>
+#include <taskmodels/periodicloadtask.h>
 #include <taskmodels/sporadictask.h>
 #include <taskmodels/sptask.h>
 #include <taskmodels/mkctask.h>

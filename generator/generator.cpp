@@ -34,11 +34,16 @@ bool parseArgs(int argc, char *argv[], string& filename);
 int main(int argc, char*argv[]) {
 
   unsigned int seed = time(NULL);
-  if (argc > 1)
-    seed = strtoul(argv[1], NULL, 10);
+  //if (argc > 1)
+    //seed = strtoul(argv[1], NULL, 10);
 
   MKGenerator mkgen(seed);
 
+  // to add some randomization to the system
+  srand(seed);
+
+/* old stuff that checked if the tasks were schedulable or not
+ *
   MKTaskSet* ts = mkgen.nextTaskSet();
   if (ts->suffMKSched) {
     cout << "Task set passed sufficient schedulability test" << endl;
@@ -48,9 +53,10 @@ int main(int argc, char*argv[]) {
        it != ts->tasks.end(); ++it) {
     cout << *(*it) << endl;
   }
+  */
 
   /*
-    cout << "Generating Tasksets" << std::endl;
+   */
 
     string filename;
     if(parseArgs(argc,argv,filename)) {
@@ -58,28 +64,38 @@ int main(int argc, char*argv[]) {
         // Create Taskset
         UtilityCalculator* ucPtr = new UCFirmRT();
         //UtilityAggregator* uaPtr = new UAExp(0.1);
-        //UtilityAggregator* uaPtr = new UAWMean(10);
-        UtilityAggregator* uaPtr = new UAMean();
+        UtilityAggregator* uaPtr = new UAWMean(10);
+        //UtilityAggregator* uaPtr = new UAMean();
 
         vector<Task*> taskset;
 
         // Periodic Tasks
-        for(int taskNo=1; taskNo<=10; taskNo++) {
+        for(int taskNo=1; taskNo<=30; taskNo++) {
             int et = rand() % 5 + 1;
             int ct = et;
             int period = rand() % 20 + 1;
             int prio = 1;
-            taskset.push_back(new PeriodicTask(taskNo,period,et,ct,ucPtr->clone(),uaPtr->clone(),prio));
+            int matrixSize = rand() % 50 + 1;
+            int offset = 0;
+            taskset.push_back(new PeriodicLoadTask(taskNo,
+                                                   period,
+                                                   et,
+                                                   ct,
+                                                   ucPtr->clone(),
+                                                   uaPtr->clone(),
+                                                   offset,
+                                                   prio,
+                                                   matrixSize));
         }
 
-        // Sporadic Tasks
-        for(int taskNo=11; taskNo<=15; taskNo++) {
-            int et = rand() % 5 + 1;
-            int minPeriod = rand() % 20 + 1;
-            int prio = 1;
-            int seed = 1000;
-            taskset.push_back(new SporadicTask(taskNo,minPeriod,et,seed,ucPtr->clone(),uaPtr->clone(),prio));
-        }
+        //// Sporadic Tasks
+        //for(int taskNo=11; taskNo<=15; taskNo++) {
+            //int et = rand() % 5 + 1;
+            //int minPeriod = rand() % 20 + 1;
+            //int prio = 1;
+            //int seed = 1000;
+            //taskset.push_back(new SporadicTask(taskNo,minPeriod,et,seed,ucPtr->clone(),uaPtr->clone(),prio));
+        //}
 
         // Write Taskset
         TasksetWriter* writerPtr = TasksetWriter::getInstance();
@@ -97,7 +113,8 @@ int main(int argc, char*argv[]) {
         // Free xmlWriter
         delete writerPtr;
     }
-  */
+  /*
+   */
     return 0;
 }
 
