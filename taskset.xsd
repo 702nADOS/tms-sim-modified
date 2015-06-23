@@ -82,6 +82,7 @@
         <xs:sequence>
            <xs:element name="period" type="xs:integer" />
            <xs:element name="offset" type="xs:integer" default="0"/>
+           <xs:element name="matrixSize" type="xs:integer" default="0"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
