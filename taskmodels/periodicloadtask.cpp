@@ -9,6 +9,8 @@
 #include <xmlio/xmlutils.h>
 
 #include <iostream>
+#include <string>
+#include <stdlib.h>
 using namespace std;
 
 namespace tmssim {
@@ -138,10 +140,14 @@ namespace tmssim {
 
 
   int PeriodicLoadTask::writeData(xmlTextWriterPtr writer) {
+    string tasks[] = {"tumatmul", "hello"};
+    string pkg = tasks[ rand() % 3 ]; // size of tasks + 1
+
     Task::writeData(writer);
     xmlTextWriterWriteElement(writer, (xmlChar*)"period", STRTOXML(XmlUtils::convertToXML<int>(period)));
     xmlTextWriterWriteElement(writer, (xmlChar*)"offset", STRTOXML(XmlUtils::convertToXML<int>(offset)));
     xmlTextWriterWriteElement(writer, (xmlChar*)"matrixSize", STRTOXML(XmlUtils::convertToXML<int>(matrixSize)));
+    xmlTextWriterWriteElement(writer, (xmlChar*)"pkg", STRTOXML(XmlUtils::convertToXML<string>(pkg)))
     return 0;
   }
 
