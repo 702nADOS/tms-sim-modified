@@ -26,7 +26,7 @@ using namespace tmssim;
  * @param filename The file to which the generated xml should be written
  * @return false on error, true otherwise
  */
-bool parseArgs(int argc, char *argv[], string& filename);
+bool parseArgs(int argc, char *argv[], string& filename, int& num);
 
 /**
  * Generates an xml-taskset
@@ -42,24 +42,9 @@ int main(int argc, char*argv[]) {
   // to add some randomization to the system
   srand(seed);
 
-/* old stuff that checked if the tasks were schedulable or not
- *
-  MKTaskSet* ts = mkgen.nextTaskSet();
-  if (ts->suffMKSched) {
-    cout << "Task set passed sufficient schedulability test" << endl;
-    MKGenerator::calcRotationValues(ts->tasks);
-  }
-  for (vector<MKTask*>::iterator it = ts->tasks.begin();
-       it != ts->tasks.end(); ++it) {
-    cout << *(*it) << endl;
-  }
-  */
-
-  /*
-   */
-
     string filename;
-    if(parseArgs(argc,argv,filename)) {
+    int num=30;
+    if(parseArgs(argc,argv,filename, num)) {
 
         // Create Taskset
         UtilityCalculator* ucPtr = new UCFirmRT();
@@ -70,7 +55,7 @@ int main(int argc, char*argv[]) {
         vector<Task*> taskset;
 
         // Periodic Tasks
-        for(int taskNo=1; taskNo<=30; taskNo++) {
+        for(int taskNo=1; taskNo<=num; taskNo++) {
             int et = rand() % 5 + 1;
             int ct = et;
             int period = rand() % 20 + 1;
@@ -87,15 +72,6 @@ int main(int argc, char*argv[]) {
                                                    prio,
                                                    matrixSize));
         }
-
-        //// Sporadic Tasks
-        //for(int taskNo=11; taskNo<=15; taskNo++) {
-            //int et = rand() % 5 + 1;
-            //int minPeriod = rand() % 20 + 1;
-            //int prio = 1;
-            //int seed = 1000;
-            //taskset.push_back(new SporadicTask(taskNo,minPeriod,et,seed,ucPtr->clone(),uaPtr->clone(),prio));
-        //}
 
         // Write Taskset
         TasksetWriter* writerPtr = TasksetWriter::getInstance();
@@ -118,7 +94,7 @@ int main(int argc, char*argv[]) {
     return 0;
 }
 
-bool parseArgs(int argc, char *argv[], string& filename) {
+bool parseArgs(int argc, char *argv[], string& filename, int& num) {
 
     char *str;
     char sw;
@@ -150,6 +126,11 @@ bool parseArgs(int argc, char *argv[], string& filename) {
                 {
                     filename = str;
                     break;
+                }
+                case 'n':
+                {
+                  num = atoi(str);
+                  break; 
                 }
                 default:
                 {
